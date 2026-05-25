@@ -1,6 +1,7 @@
 // @ts-check
 
 import mdx from '@astrojs/mdx';
+import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 
@@ -9,7 +10,7 @@ const site = process.env.SITE_URL ?? 'https://landfallbox.github.io';
 // https://astro.build/config
 export default defineConfig({
 	site,
-	integrations: [mdx(), sitemap()],
+	integrations: [mdx(), sitemap(), react()],
 	fonts: [
 		{
 			provider: fontProviders.local(),

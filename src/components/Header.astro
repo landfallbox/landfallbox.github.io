@@ -1,6 +1,7 @@
 ---
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+import ThemeToggle from './ThemeToggle';
 ---
 
 <header>
@@ -11,10 +12,7 @@ import HeaderLink from './HeaderLink.astro';
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
 		</div>
-		<button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-			<span class="theme-toggle__icon" aria-hidden="true"></span>
-			<span class="theme-toggle__label">Theme</span>
-		</button>
+		<ThemeToggle client:load />
 		<div class="social-links">
 			<a href="https://m.webtoo.ls/@astro" target="_blank">
 				<span class="sr-only">Follow Astro on Mastodon</span>
@@ -46,52 +44,6 @@ import HeaderLink from './HeaderLink.astro';
 		</div>
 	</nav>
 </header>
-<script>
-	const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
-	const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-	const getStoredTheme = () => {
-		let storedTheme: string | null = null;
-		try {
-			storedTheme = localStorage.getItem('theme');
-		} catch {
-			storedTheme = null;
-		}
-		return storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : null;
-	};
-
-	const getTheme = () => getStoredTheme() ?? (mediaQuery.matches ? 'dark' : 'light');
-
-	const applyTheme = (theme: 'light' | 'dark') => {
-		document.documentElement.dataset.theme = theme;
-		document.documentElement.style.colorScheme = theme;
-		document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute(
-			'content',
-			theme === 'dark' ? '#0f131d' : '#ffffff',
-		);
-		if (!toggle) return;
-		const isDark = theme === 'dark';
-		toggle.setAttribute('aria-pressed', String(isDark));
-		toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-		toggle.querySelector('.theme-toggle__label')!.textContent = isDark ? 'Dark' : 'Light';
-	};
-
-	applyTheme(getTheme());
-
-	toggle?.addEventListener('click', () => {
-		const nextTheme = getTheme() === 'dark' ? 'light' : 'dark';
-		try {
-			localStorage.setItem('theme', nextTheme);
-		} catch {
-			// Ignore storage failures and keep the selected theme for this page view.
-		}
-		applyTheme(nextTheme);
-	});
-
-	mediaQuery.addEventListener('change', () => {
-		if (!getStoredTheme()) applyTheme(getTheme());
-	});
-</script>
 <style>
 	header {
 		margin: 0;
@@ -123,7 +75,7 @@ import HeaderLink from './HeaderLink.astro';
 		text-decoration: none;
 		border-bottom-color: var(--accent);
 	}
-	.theme-toggle {
+	:global(.theme-toggle) {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.45rem;
@@ -138,19 +90,18 @@ import HeaderLink from './HeaderLink.astro';
 		line-height: 1;
 		cursor: pointer;
 	}
-	.theme-toggle:hover {
+	:global(.theme-toggle:hover) {
 		border-color: var(--accent);
 		color: var(--accent);
 	}
-	.theme-toggle:focus-visible {
+	:global(.theme-toggle:focus-visible) {
 		outline: 3px solid var(--accent);
 		outline-offset: 3px;
 	}
-	.theme-toggle__icon::before {
-		content: '☀️';
-	}
-	:global(:root[data-theme='dark']) .theme-toggle__icon::before {
-		content: '🌙';
+	:global(.theme-toggle__icon) {
+		display: inline-flex;
+		width: 1em;
+		justify-content: center;
 	}
 	.social-links,
 	.social-links a {
@@ -160,7 +111,7 @@ import HeaderLink from './HeaderLink.astro';
 		nav {
 			gap: 0.25rem;
 		}
-		.theme-toggle__label {
+		:global(.theme-toggle__label) {
 			display: none;
 		}
 		.social-links {
