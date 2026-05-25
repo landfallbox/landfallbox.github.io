@@ -21,6 +21,7 @@ const { title, description, image = FallbackImage } = Astro.props;
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#ffffff" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="sitemap" href="/sitemap-index.xml" />
@@ -41,6 +42,21 @@ const { title, description, image = FallbackImage } = Astro.props;
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+
+<script is:inline>
+	const storedTheme = (() => {
+		try {
+			return localStorage.getItem('theme');
+		} catch {
+			return null;
+		}
+	})();
+	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+	const theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : prefersDark ? 'dark' : 'light';
+	document.documentElement.dataset.theme = theme;
+	document.documentElement.style.colorScheme = theme;
+	document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0f131d' : '#ffffff');
+</script>
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />

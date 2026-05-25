@@ -11,6 +11,10 @@ import HeaderLink from './HeaderLink.astro';
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
 		</div>
+		<button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+			<span class="theme-toggle__icon" aria-hidden="true"></span>
+			<span class="theme-toggle__label">Theme</span>
+		</button>
 		<div class="social-links">
 			<a href="https://m.webtoo.ls/@astro" target="_blank">
 				<span class="sr-only">Follow Astro on Mastodon</span>
@@ -42,11 +46,57 @@ import HeaderLink from './HeaderLink.astro';
 		</div>
 	</nav>
 </header>
+<script>
+	const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
+	const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+	const getStoredTheme = () => {
+		let storedTheme: string | null = null;
+		try {
+			storedTheme = localStorage.getItem('theme');
+		} catch {
+			storedTheme = null;
+		}
+		return storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : null;
+	};
+
+	const getTheme = () => getStoredTheme() ?? (mediaQuery.matches ? 'dark' : 'light');
+
+	const applyTheme = (theme: 'light' | 'dark') => {
+		document.documentElement.dataset.theme = theme;
+		document.documentElement.style.colorScheme = theme;
+		document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute(
+			'content',
+			theme === 'dark' ? '#0f131d' : '#ffffff',
+		);
+		if (!toggle) return;
+		const isDark = theme === 'dark';
+		toggle.setAttribute('aria-pressed', String(isDark));
+		toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+		toggle.querySelector('.theme-toggle__label')!.textContent = isDark ? 'Dark' : 'Light';
+	};
+
+	applyTheme(getTheme());
+
+	toggle?.addEventListener('click', () => {
+		const nextTheme = getTheme() === 'dark' ? 'light' : 'dark';
+		try {
+			localStorage.setItem('theme', nextTheme);
+		} catch {
+			// Ignore storage failures and keep the selected theme for this page view.
+		}
+		applyTheme(nextTheme);
+	});
+
+	mediaQuery.addEventListener('change', () => {
+		if (!getStoredTheme()) applyTheme(getTheme());
+	});
+</script>
 <style>
 	header {
 		margin: 0;
 		padding: 0 1em;
-		background: white;
+		background: var(--surface);
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
 	}
 	h2 {
@@ -65,7 +115,7 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	nav a {
 		padding: 1em 0.5em;
-		color: var(--black);
+		color: var(--heading);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
 	}
@@ -73,11 +123,46 @@ import HeaderLink from './HeaderLink.astro';
 		text-decoration: none;
 		border-bottom-color: var(--accent);
 	}
+	.theme-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		margin: 0 0.5em;
+		padding: 0.35rem 0.6rem;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--background-soft);
+		color: var(--heading);
+		font: inherit;
+		font-size: 0.8rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+	.theme-toggle:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.theme-toggle:focus-visible {
+		outline: 3px solid var(--accent);
+		outline-offset: 3px;
+	}
+	.theme-toggle__icon::before {
+		content: '☀️';
+	}
+	:global(:root[data-theme='dark']) .theme-toggle__icon::before {
+		content: '🌙';
+	}
 	.social-links,
 	.social-links a {
 		display: flex;
 	}
 	@media (max-width: 720px) {
+		nav {
+			gap: 0.25rem;
+		}
+		.theme-toggle__label {
+			display: none;
+		}
 		.social-links {
 			display: none;
 		}
