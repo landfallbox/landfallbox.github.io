@@ -1,63 +1,273 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
 import Layout from '../layouts/BlogPost.astro';
+
+const timeline = [
+	{
+		date: 'Sep 2024',
+		title: ' Suzhou University of Science and Technology',
+		description: 'Started graduate study with a focus on applying reinforcement learning to HVAC control in building intelligence.',
+	},
+	{
+		date: 'Sep 2019',
+		title: 'Nanjing Tech University',
+		description: 'Started undergraduate study at Nanjing Tech University, entered Computer Science and Technology major.',
+	},
+];
+
+const focusAreas = [
+	'Web Development',
+	'TypeScript / React / Astro',
+	'Tools & Workflow',
+	'Engineering Notes',
+];
 ---
 
 <Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
+	title="About me"
+	description="A short introduction to Landfallbox, current focus areas, graduate study, and research on reinforcement learning for HVAC control."
+	showDate={false}
+	showHeroImage={false}
 >
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+	<style>
+		.timeline {
+			position: relative;
+			display: grid;
+			gap: 0;
+			margin: 2.5rem 0 3rem;
+			padding: 0.5rem 0;
+			list-style: none;
+		}
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+		.timeline::before {
+			position: absolute;
+			top: 1rem;
+			bottom: 1rem;
+			left: calc(7.5rem + 0.9rem + 0.75rem);
+			width: 3px;
+			border-radius: 999px;
+			background: linear-gradient(
+				to bottom,
+				color-mix(in srgb, var(--accent) 30%, transparent),
+				color-mix(in srgb, var(--accent) 85%, transparent),
+				color-mix(in srgb, var(--accent) 30%, transparent)
+			);
+			box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 8%, transparent);
+			content: '';
+			transform: translateX(-50%);
+		}
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+		.timeline__item {
+			position: relative;
+			display: grid;
+			grid-template-columns: 7.5rem 1.5rem minmax(0, 1fr);
+			gap: 0.9rem;
+			padding: 0.35rem 0 1.35rem;
+		}
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+		.timeline__item:last-child {
+			padding-bottom: 0.35rem;
+		}
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
+		.timeline__date {
+			display: block;
+			padding-top: 0.85rem;
+			color: var(--heading);
+			font-size: clamp(1.05rem, 3vw, 1.35rem);
+			font-weight: 800;
+			letter-spacing: -0.02em;
+			line-height: 1;
+			text-align: right;
+		}
+
+		.timeline__marker {
+			position: relative;
+			z-index: 1;
+			display: flex;
+			justify-content: center;
+			padding-top: 0.9rem;
+		}
+
+		.timeline__marker::before {
+			width: 0.85rem;
+			height: 0.85rem;
+			border: 3px solid var(--background);
+			border-radius: 999px;
+			background: var(--accent);
+			box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+			content: '';
+		}
+
+		.timeline__card {
+			position: relative;
+			padding: 1.1rem 1.2rem;
+			border: 1px solid var(--border);
+			border-radius: 18px;
+			background: linear-gradient(135deg, var(--surface), var(--background-soft));
+			box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+		}
+
+		.timeline__card::before {
+			position: absolute;
+			top: 1.05rem;
+			left: -0.5rem;
+			width: 0.85rem;
+			height: 0.85rem;
+			border-bottom: 1px solid var(--border);
+			border-left: 1px solid var(--border);
+			background: var(--surface);
+			transform: rotate(45deg);
+			content: '';
+		}
+
+		.timeline__card h3 {
+			margin: 0 0 0.45rem;
+			font-size: 1.25rem;
+			letter-spacing: -0.02em;
+		}
+
+		.timeline__card p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 1rem;
+			line-height: 1.65;
+		}
+
+		.focus-list,
+		.link-list {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+			margin: 1rem 0 2rem;
+			padding: 0;
+			list-style: none;
+		}
+
+		.focus-list li,
+		.link-list a {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0.55rem 0.85rem;
+			border: 1px solid rgba(var(--accent), 0.2);
+			border-radius: 999px;
+			background: rgba(var(--accent), 0.07);
+			font-size: 0.95rem;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		.link-list a:hover {
+			border-color: rgba(var(--accent), 0.42);
+			background: rgba(var(--accent), 0.12);
+			text-decoration: none;
+		}
+
+		@media (max-width: 520px) {
+			.timeline::before {
+				left: calc(4.75rem + 0.65rem + 0.6rem);
+			}
+
+			.timeline__item {
+				grid-template-columns: 4.75rem 1.2rem minmax(0, 1fr);
+				gap: 0.65rem;
+			}
+
+			.timeline__date {
+				font-size: 1.15rem;
+			}
+
+			.timeline__card {
+				padding: 1rem;
+			}
+		}
+
+		@media (max-width: 390px) {
+			.timeline {
+				padding-left: 0;
+			}
+
+			.timeline::before {
+				left: 0.6rem;
+			}
+
+			.timeline__item {
+				grid-template-columns: 1.2rem minmax(0, 1fr);
+				gap: 0.7rem;
+			}
+
+			.timeline__date {
+				grid-column: 2;
+				padding-top: 0;
+				text-align: left;
+			}
+
+			.timeline__marker {
+				grid-column: 1;
+				grid-row: 1 / span 2;
+				padding-top: 0.25rem;
+			}
+
+			.timeline__card {
+				grid-column: 2;
+			}
+
+			.timeline__card::before {
+				display: none;
+			}
+		}
+	</style>
+
+	<ol class="timeline">
+			{
+				timeline.map((item) => (
+					<li class="timeline__item">
+						<span class="timeline__date">{item.date}</span>
+						<span class="timeline__marker" aria-hidden="true" />
+						<div class="timeline__card">
+							<h3>{item.title}</h3>
+							<p>{item.description}</p>
+						</div>
+					</li>
+				))
+			}
+	</ol>
+
+	<section aria-labelledby="focus-title">
+		<h2 id="focus-title">What I focus on</h2>
+		<p>
+			My interests sit around practical web development, useful tooling, and the small engineering
+			decisions that make projects easier to maintain over time.
+		</p>
+		<ul class="focus-list" aria-label="Focus areas">
+			{focusAreas.map((area) => <li>{area}</li>)}
+		</ul>
+	</section>
+
+	<section aria-labelledby="work-title">
+		<h2 id="work-title">How I work</h2>
+		<p>
+			I prefer clear interfaces, small iterations, and decisions that can be explained later. When
+			something breaks, I try to understand the cause, document the fix, and keep the next version a
+			little easier to change.
+		</p>
+	</section>
+
+	<section aria-labelledby="blog-purpose-title">
+		<h2 id="blog-purpose-title">Why this blog exists</h2>
+		<p>
+			This blog is a place to record solved problems, useful workflows, experiments, and lessons from
+			projects in progress. Some posts are polished notes; others are snapshots of what I am learning.
+		</p>
+	</section>
+
+	<section aria-labelledby="elsewhere-title">
+		<h2 id="elsewhere-title">Elsewhere</h2>
+		<p>You can browse the writing archive or follow along with public work on GitHub.</p>
+		<ul class="link-list" aria-label="Elsewhere links">
+			<li><a href="/blog/">Read the blog</a></li>
+			<li>
+				<a href="https://github.com/landfallbox" target="_blank" rel="noopener noreferrer">GitHub</a>
+			</li>
+		</ul>
+	</section>
 </Layout>

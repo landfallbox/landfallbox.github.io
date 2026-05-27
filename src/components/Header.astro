@@ -52,7 +52,7 @@ import ThemeToggle from './ThemeToggle';
 	}
 	nav {
 		display: grid;
-		grid-template-columns: auto minmax(0, 1fr) auto;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
 		align-items: center;
 		column-gap: 1rem;
 	}
@@ -71,6 +71,7 @@ import ThemeToggle from './ThemeToggle';
 		align-items: center;
 		gap: 0.25rem;
 		flex-wrap: wrap;
+		max-width: 100%;
 	}
 	.primary-links a {
 		padding: 1em 0.5em;
@@ -125,6 +126,7 @@ import ThemeToggle from './ThemeToggle';
 			grid-area: links;
 			justify-self: center;
 			width: 100%;
+			max-width: none;
 		}
 		.nav-actions {
 			grid-area: actions;
