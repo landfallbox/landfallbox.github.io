@@ -4,7 +4,7 @@ import Layout from '../layouts/BlogPost.astro';
 const timeline = [
 	{
 		date: 'Sep 2024',
-		title: ' Suzhou University of Science and Technology',
+		title: 'Suzhou University of Science and Technology',
 		description: 'Started graduate study with a focus on applying reinforcement learning to HVAC control in building intelligence.',
 	},
 	{
@@ -13,18 +13,11 @@ const timeline = [
 		description: 'Started undergraduate study at Nanjing Tech University, entered Computer Science and Technology major.',
 	},
 ];
-
-const focusAreas = [
-	'Web Development',
-	'TypeScript / React / Astro',
-	'Tools & Workflow',
-	'Engineering Notes',
-];
 ---
 
 <Layout
 	title="About me"
-	description="A short introduction to Landfallbox, current focus areas, graduate study, and research on reinforcement learning for HVAC control."
+	description="A short introduction to Landfallbox, education timeline, current work, site purpose, short-term plans, and hobbies."
 	showDate={false}
 	showHeroImage={false}
 >
@@ -132,34 +125,51 @@ const focusAreas = [
 			line-height: 1.65;
 		}
 
-		.focus-list,
-		.link-list {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 0.75rem;
-			margin: 1rem 0 2rem;
-			padding: 0;
-			list-style: none;
+		.hobby-grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 1rem;
+			margin: 1rem 0 0;
 		}
 
-		.focus-list li,
-		.link-list a {
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			padding: 0.55rem 0.85rem;
-			border: 1px solid rgba(var(--accent), 0.2);
-			border-radius: 999px;
-			background: rgba(var(--accent), 0.07);
-			font-size: 0.95rem;
-			font-weight: 700;
-			text-decoration: none;
+		.hobby-card {
+			padding: 1.1rem 1.2rem;
+			border: 1px solid var(--border);
+			border-radius: 18px;
+			background: linear-gradient(135deg, var(--surface), var(--background-soft));
+			box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
 		}
 
-		.link-list a:hover {
-			border-color: rgba(var(--accent), 0.42);
-			background: rgba(var(--accent), 0.12);
-			text-decoration: none;
+		.hobby-card h3 {
+			margin: 0 0 0.45rem;
+			font-size: 1.15rem;
+			letter-spacing: -0.02em;
+		}
+
+		.hobby-card p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 1rem;
+			line-height: 1.65;
+		}
+
+		.hobby-quote {
+			margin: 0.9rem 0 0;
+			padding: 0.9rem 1rem;
+			border-left: 4px solid var(--accent);
+			border-radius: 14px;
+			background: color-mix(in srgb, var(--accent) 7%, transparent);
+		}
+
+		.hobby-quote p {
+			color: var(--heading);
+			font-style: italic;
+		}
+
+		.hobby-quote footer {
+			margin-top: 0.5rem;
+			color: var(--muted);
+			font-size: 0.92rem;
 		}
 
 		@media (max-width: 520px) {
@@ -178,6 +188,10 @@ const focusAreas = [
 
 			.timeline__card {
 				padding: 1rem;
+			}
+
+			.hobby-grid {
+				grid-template-columns: 1fr;
 			}
 		}
 
@@ -232,42 +246,57 @@ const focusAreas = [
 			}
 	</ol>
 
-	<section aria-labelledby="focus-title">
-		<h2 id="focus-title">What I focus on</h2>
+	<section aria-labelledby="now-title">
+		<h2 id="now-title">What I’m working on</h2>
 		<p>
-			My interests sit around practical web development, useful tooling, and the small engineering
-			decisions that make projects easier to maintain over time.
-		</p>
-		<ul class="focus-list" aria-label="Focus areas">
-			{focusAreas.map((area) => <li>{area}</li>)}
-		</ul>
-	</section>
-
-	<section aria-labelledby="work-title">
-		<h2 id="work-title">How I work</h2>
-		<p>
-			I prefer clear interfaces, small iterations, and decisions that can be explained later. When
-			something breaks, I try to understand the cause, document the fix, and keep the next version a
-			little easier to change.
+			Right now, most of my time goes into graduate study. I am close to finishing my first paper, which is
+			required for graduation. My research focuses on reinforcement learning for HVAC control in building
+			intelligence (boring but easy to publish). Outside research, I also spend a lot of time following the 
+			latest developments in LLMs (very exciting).
 		</p>
 	</section>
 
 	<section aria-labelledby="blog-purpose-title">
-		<h2 id="blog-purpose-title">Why this blog exists</h2>
+		<h2 id="blog-purpose-title">Why I built this site</h2>
 		<p>
-			This blog is a place to record solved problems, useful workflows, experiments, and lessons from
-			projects in progress. Some posts are polished notes; others are snapshots of what I am learning.
+			I built this site to record my learning process in a place that is easier to revisit than scattered
+			files or temporary notes. Writing things down helps me review them later, and publishing them may
+			also make the notes useful to someone who is learning the same topic.
 		</p>
 	</section>
 
-	<section aria-labelledby="elsewhere-title">
-		<h2 id="elsewhere-title">Elsewhere</h2>
-		<p>You can browse the writing archive or follow along with public work on GitHub.</p>
-		<ul class="link-list" aria-label="Elsewhere links">
-			<li><a href="/blog/">Read the blog</a></li>
-			<li>
-				<a href="https://github.com/landfallbox" target="_blank" rel="noopener noreferrer">GitHub</a>
-			</li>
-		</ul>
+	<section aria-labelledby="next-title">
+		<h2 id="next-title">What’s next</h2>
+		<p>
+			My short-term plan is to work in industry after graduation. If possible, I hope to take part in a
+			summer or day-to-day internship before then, so I can gain practical experience and prepare more
+			steadily for full-time work.
+		</p>
 	</section>
+
+	<section aria-labelledby="hobbies-title">
+		<h2 id="hobbies-title">Life outside work</h2>
+		<p>I also like to keep a few hobbies outside study and work.</p>
+		<div class="hobby-grid">
+			<article class="hobby-card">
+				<h3>Cycling</h3>
+				<p>
+					I ride an XDS AD300. Cycling is my way to clear my head, stretch after long hours at the desk,
+					and keep a simple routine outside of research.
+				</p>
+			</article>
+			<article class="hobby-card">
+				<h3>Formula 1</h3>
+				<p>
+					I do not have a fixed favorite team, but Sebastian Vettel once said: "Everyone is a Ferrari fan. 
+					Even if they say they are not, they are Ferrari fans." So, kind of a Tifosi, I guess.
+				</p>
+				<p>
+					Thanks to HNPF, I can follow races more easily.
+				</p>
+			</article>
+		</div>
+	</section>
+
+	
 </Layout>
