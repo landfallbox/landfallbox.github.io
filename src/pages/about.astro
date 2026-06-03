@@ -1,23 +1,24 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import Layout from "../layouts/BlogPost.astro";
 
 const timeline = [
 	{
-		date: 'Sep 2024',
-		title: 'Suzhou University of Science and Technology',
-		description: 'Started graduate study with a focus on applying reinforcement learning to HVAC control in building intelligence.',
+		date: "2024 年 9 月",
+		title: "苏州科技大学",
+		description:
+			"读研究生，研究方向为将强化学习应用到建筑智能中的暖通空调控制。",
 	},
 	{
-		date: 'Sep 2019',
-		title: 'Nanjing Tech University',
-		description: 'Started undergraduate study at Nanjing Tech University, entered Computer Science and Technology major.',
+		date: "2019 年 9 月",
+		title: "南京工业大学",
+		description: "读本科，进入计算机科学与技术专业。",
 	},
 ];
 ---
 
 <Layout
-	title="About me"
-	description="A short introduction to Landfallbox, education timeline, current work, site purpose, short-term plans, and hobbies."
+	title="关于我"
+	description="关于 Landfallbox 的简短介绍：教育经历、当前工作、建站目的、近期计划和兴趣爱好。"
 	showDate={false}
 	showHeroImage={false}
 >
@@ -44,8 +45,9 @@ const timeline = [
 				color-mix(in srgb, var(--accent) 85%, transparent),
 				color-mix(in srgb, var(--accent) 30%, transparent)
 			);
-			box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 8%, transparent);
-			content: '';
+			box-shadow: 0 0 0 4px
+				color-mix(in srgb, var(--accent) 8%, transparent);
+			content: "";
 			transform: translateX(-50%);
 		}
 
@@ -86,8 +88,9 @@ const timeline = [
 			border: 3px solid var(--background);
 			border-radius: 999px;
 			background: var(--accent);
-			box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
-			content: '';
+			box-shadow: 0 0 0 4px
+				color-mix(in srgb, var(--accent) 16%, transparent);
+			content: "";
 		}
 
 		.timeline__card {
@@ -95,7 +98,11 @@ const timeline = [
 			padding: 1.1rem 1.2rem;
 			border: 1px solid var(--border);
 			border-radius: 18px;
-			background: linear-gradient(135deg, var(--surface), var(--background-soft));
+			background: linear-gradient(
+				135deg,
+				var(--surface),
+				var(--background-soft)
+			);
 			box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
 		}
 
@@ -109,7 +116,7 @@ const timeline = [
 			border-left: 1px solid var(--border);
 			background: var(--surface);
 			transform: rotate(45deg);
-			content: '';
+			content: "";
 		}
 
 		.timeline__card h3 {
@@ -136,7 +143,11 @@ const timeline = [
 			padding: 1.1rem 1.2rem;
 			border: 1px solid var(--border);
 			border-radius: 18px;
-			background: linear-gradient(135deg, var(--surface), var(--background-soft));
+			background: linear-gradient(
+				135deg,
+				var(--surface),
+				var(--background-soft)
+			);
 			box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
 		}
 
@@ -232,71 +243,63 @@ const timeline = [
 	</style>
 
 	<ol class="timeline">
-			{
-				timeline.map((item) => (
-					<li class="timeline__item">
-						<span class="timeline__date">{item.date}</span>
-						<span class="timeline__marker" aria-hidden="true" />
-						<div class="timeline__card">
-							<h3>{item.title}</h3>
-							<p>{item.description}</p>
-						</div>
-					</li>
-				))
-			}
+		{
+			timeline.map((item) => (
+				<li class="timeline__item">
+					<span class="timeline__date">{item.date}</span>
+					<span class="timeline__marker" aria-hidden="true" />
+					<div class="timeline__card">
+						<h3>{item.title}</h3>
+						<p>{item.description}</p>
+					</div>
+				</li>
+			))
+		}
 	</ol>
 
 	<section aria-labelledby="now-title">
-		<h2 id="now-title">What I’m working on</h2>
+		<h2 id="now-title">我正在做什么</h2>
 		<p>
-			Right now, most of my time goes into graduate study. I am close to finishing my first paper, which is
-			required for graduation. My research focuses on reinforcement learning for HVAC control in building
-			intelligence (boring but easy to publish). Outside research, I also spend a lot of time following the 
-			latest developments in LLMs (very exciting).
+			主要在写第一篇论文，即将完成。<br />
+			我的研究方向主要是建筑智能中的强化学习暖通空调控制（没意思，但是好中）。
+			工作之余主要关注大语言模型的最新进展（很热门）。
 		</p>
 	</section>
 
 	<section aria-labelledby="blog-purpose-title">
-		<h2 id="blog-purpose-title">Why I built this site</h2>
+		<h2 id="blog-purpose-title">为什么做这个网站</h2>
 		<p>
-			I built this site to record my learning process in a place that is easier to revisit than scattered
-			files or temporary notes. Writing things down helps me review them later, and publishing them may
-			also make the notes useful to someone who is learning the same topic.
+			主要是为了把学习过程记录下来，便于自己回顾和总结，也方便其他觉得有用的人。
 		</p>
 	</section>
 
 	<section aria-labelledby="next-title">
-		<h2 id="next-title">What’s next</h2>
+		<h2 id="next-title">短期计划</h2>
 		<p>
-			My short-term plan is to work in industry after graduation. If possible, I hope to take part in a
-			summer or day-to-day internship before then, so I can gain practical experience and prepare more
-			steadily for full-time work.
+			短期计划是毕业后进入企业工作。如果条件允许，我希望在毕业前参加暑期实习或日常实习，
+			积累一些实际经验，也更稳妥地为正式工作做准备。
 		</p>
 	</section>
 
 	<section aria-labelledby="hobbies-title">
-		<h2 id="hobbies-title">Life outside work</h2>
-		<p>I also like to keep a few hobbies outside study and work.</p>
+		<h2 id="hobbies-title">兴趣爱好</h2>
 		<div class="hobby-grid">
 			<article class="hobby-card">
-				<h3>Cycling</h3>
+				<h3>骑行</h3>
 				<p>
-					I ride an XDS AD300. Cycling is my way to clear my head, stretch after long hours at the desk,
-					and keep a simple routine outside of research.
+					现在骑的是喜德盛 AD300，菜腿努力中
 				</p>
 			</article>
 			<article class="hobby-card">
-				<h3>Formula 1</h3>
+				<h3>F1</h3>
 				<p>
-					I do not have a fixed favorite team, but Sebastian Vettel once said: "Everyone is a Ferrari fan. 
-					Even if they say they are not, they are Ferrari fans." So, kind of a Tifosi, I guess.
+					没有特别支持的车队，但维特尔曾经说过：“每个人都是法拉利车迷。就算他们说自己不是，
+					他们也是法拉利车迷。” 不得不说，勒克莱尔确实帅。
 				</p>
 				<p>
-					Thanks to HNPF, I can follow races more easily.
+					此外，特别感谢胡闹 P 房提供的观赛渠道。
 				</p>
 			</article>
 		</div>
 	</section>
-
-	
 </Layout>

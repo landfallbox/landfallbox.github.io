@@ -129,7 +129,7 @@ export default function ThemeToggle() {
 				className="theme-toggle"
 				checked={isDark}
 				onChange={handleChange}
-				aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+				aria-label={isDark ? '切换到浅色模式' : '切换到深色模式'}
 				height={34}
 				width={68}
 				handleDiameter={30}

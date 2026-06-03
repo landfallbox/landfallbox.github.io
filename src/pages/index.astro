@@ -15,7 +15,7 @@ const [featuredPost, ...secondaryPosts] = latestPosts;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
@@ -56,31 +56,16 @@ const [featuredPost, ...secondaryPosts] = latestPosts;
 			.hero__content {
 				position: relative;
 				z-index: 1;
-				max-width: 680px;
-			}
-
-			.eyebrow {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.45rem;
-				margin: 0 0 1rem;
-				padding: 0.35rem 0.7rem;
-				border: 1px solid rgba(var(--accent), 0.24);
-				border-radius: 999px;
-				background: rgba(var(--accent), 0.08);
-				color: rgb(var(--accent));
-				font-size: 0.85rem;
-				font-weight: 700;
-				letter-spacing: 0.03em;
-				text-transform: uppercase;
+				max-width: 820px;
 			}
 
 			.hero h1 {
 				max-width: 820px;
 				margin: 0;
-				font-size: clamp(3rem, 8vw, 5.4rem);
-				line-height: 0.95;
-				letter-spacing: -0.06em;
+				font-size: clamp(3rem, 7vw, 5rem);
+				line-height: 1.08;
+				letter-spacing: 0;
+				text-wrap: balance;
 			}
 
 			.hero__lead {
@@ -89,57 +74,6 @@ const [featuredPost, ...secondaryPosts] = latestPosts;
 				color: var(--muted);
 				font-size: clamp(1.1rem, 2.4vw, 1.35rem);
 				line-height: 1.7;
-			}
-
-			.hero__actions {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.85rem;
-				margin-top: 2rem;
-			}
-
-			.button {
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
-				min-height: 2.75rem;
-				padding: 0 1.15rem;
-				border: 1px solid transparent;
-				border-radius: 999px;
-				font-weight: 700;
-				text-decoration: none;
-				transition:
-					transform 0.2s ease,
-					box-shadow 0.2s ease,
-					border-color 0.2s ease,
-					background 0.2s ease;
-			}
-
-			.button:hover {
-				transform: translateY(-2px);
-				text-decoration: none;
-			}
-
-			.button--primary {
-				background: rgb(var(--accent));
-				color: #fff;
-				box-shadow: 0 14px 30px rgba(var(--accent), 0.25);
-			}
-
-			.button--primary:hover {
-				color: #fff;
-				box-shadow: 0 18px 36px rgba(var(--accent), 0.32);
-			}
-
-			.button--secondary {
-				border-color: var(--border);
-				background: var(--surface);
-				color: var(--heading);
-			}
-
-			.button--secondary:hover {
-				border-color: rgba(var(--accent), 0.4);
-				color: rgb(var(--accent));
 			}
 
 			.section-header {
@@ -257,9 +191,6 @@ const [featuredPost, ...secondaryPosts] = latestPosts;
 				color: rgb(var(--accent));
 			}
 
-			.info-grid {
-			}
-
 			.panel {
 				padding: clamp(1.5rem, 4vw, 2rem);
 				border: 1px solid var(--border);
@@ -307,13 +238,10 @@ const [featuredPost, ...secondaryPosts] = latestPosts;
 				}
 
 				.hero h1 {
-					font-size: 3rem;
+					font-size: 2.7rem;
+					line-height: 1.12;
 				}
 
-				.hero__actions,
-				.button {
-					width: 100%;
-				}
 			}
 		</style>
 	</head>
@@ -322,32 +250,20 @@ const [featuredPost, ...secondaryPosts] = latestPosts;
 		<main class="home-stack">
 			<section class="hero" aria-labelledby="hero-title">
 				<div class="hero__content">
-					<p class="eyebrow">Personal blog</p>
-					<h1 id="hero-title">Landfallbox Blog</h1>
+					<h1 id="hero-title">Landfallbox 的博客</h1>
 					<p class="hero__lead">
-						Notes on code, tools, and building things. I use this space to collect engineering
-						ideas, development workflows, and learning notes from projects in progress.
+						记录一些学习笔记，偶尔分享一些想法。<br/>
+						主要是为了便于自己回顾和总结，顺便帮助其他觉得有用的人。
 					</p>
-					<div class="hero__actions" aria-label="Primary actions">
-						<a class="button button--primary" href="/blog/">Read the blog</a>
-						<a class="button button--secondary" href="/about/">About me</a>
-						<a
-							class="button button--secondary"
-							href="https://github.com/landfallbox"
-							target="_blank"
-							rel="noopener noreferrer">GitHub</a
-						>
-					</div>
 				</div>
 			</section>
 
 			<section aria-labelledby="latest-posts-title">
 				<div class="section-header">
 					<div>
-						<h2 id="latest-posts-title">Latest writing</h2>
-						<p>Recent notes and essays from the blog, automatically pulled from the content collection.</p>
+						<h2 id="latest-posts-title">最新文章</h2>
 					</div>
-					<a class="section-link" href="/blog/">View all posts →</a>
+					<a class="section-link" href="/blog/">查看全部文章 →</a>
 				</div>
 
 				{
@@ -365,7 +281,7 @@ const [featuredPost, ...secondaryPosts] = latestPosts;
 									</p>
 									<h3>{featuredPost.data.title}</h3>
 									<p>{featuredPost.data.description}</p>
-									<span class="post-card__read-more">Read article →</span>
+									<span class="post-card__read-more">阅读全文 →</span>
 								</div>
 							</a>
 
@@ -391,21 +307,21 @@ const [featuredPost, ...secondaryPosts] = latestPosts;
 							</div>
 						</div>
 					) : (
-						<p class="empty-state">No posts yet. Add Markdown or MDX files under src/content/blog.</p>
+						<p class="empty-state">还没有文章。请在 src/content/blog 下添加 Markdown 或 MDX 文件。</p>
 					)
 				}
 			</section>
 
-			<section class="info-grid" aria-label="About">
+			<!-- <section class="info-grid" aria-label="关于">
 				<div class="panel">
-					<h2>About Landfallbox</h2>
+					<h2>关于 Landfallbox</h2>
 					<p>
-						I’m Landfallbox, and this is where I collect notes from building, learning, and
-						experimenting with software. The goal is to keep useful ideas easy to revisit and share.
+						我是 Landfallbox，这里用来整理我在构建、学习和尝试软件时留下的笔记。
+						我希望把有用的想法保存下来，方便以后回看，也方便分享给别人。
 					</p>
-					<a class="section-link" href="/about/">Read more about me →</a>
+					<a class="section-link" href="/about/">了解更多关于我 →</a>
 				</div>
-			</section>
+			</section> -->
 		</main>
 		<Footer />
 	</body>
