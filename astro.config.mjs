@@ -4,12 +4,18 @@ import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
 
 const site = process.env.SITE_URL ?? 'https://landfallbox.github.io';
 
 // https://astro.build/config
 export default defineConfig({
 	site,
+	markdown: {
+		remarkPlugins: [remarkMath],
+		rehypePlugins: [rehypeKatex],
+	},
 	integrations: [mdx(), sitemap(), react()],
 	fonts: [
 		{

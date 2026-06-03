@@ -8,7 +8,7 @@ import Header from '../../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
 const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || a.id.localeCompare(b.id, 'en', { numeric: true }),
 );
 ---
 
@@ -20,68 +20,89 @@ const posts = (await getCollection('blog')).sort(
 			main {
 				width: 960px;
 			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
+
+			.post-list {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 1rem;
 				list-style-type: none;
 				margin: 0;
 				padding: 0;
 			}
-			ul li {
-				width: calc(50% - 1rem);
+
+			.post-list li {
+				display: flex;
 			}
-			ul li * {
+
+			.post-card {
+				box-sizing: border-box;
+				display: flex;
+				width: 100%;
+				flex-direction: column;
+				gap: 0.85rem;
+				padding: 1.2rem;
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				background: var(--surface);
+				box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
 				text-decoration: none;
-				transition: 0.2s ease;
+				transition:
+					border-color 0.2s ease,
+					box-shadow 0.2s ease,
+					transform 0.2s ease;
 			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
+
+			.post-card:hover {
+				border-color: rgba(var(--accent), 0.38);
+				box-shadow: var(--box-shadow);
+				transform: translateY(-2px);
+				text-decoration: none;
 			}
-			ul li:first-child img {
-				width: 100%;
+
+			.post-card__meta {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+				color: var(--muted);
+				font-size: 0.9rem;
+				line-height: 1.2;
 			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
+
 			.title {
 				margin: 0;
 				color: var(--heading);
-				line-height: 1;
+				font-size: 1.4rem;
+				line-height: 1.15;
+				transition: color 0.2s ease;
 			}
-			.date {
+
+			.description {
+				flex: 1;
 				margin: 0;
 				color: var(--muted);
+				font-size: 1rem;
+				line-height: 1.65;
 			}
-			ul li a:hover h4,
-			ul li a:hover .date {
+
+			.post-card:hover .title {
 				color: rgb(var(--accent));
 			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
+
 			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
+				.post-list {
+					grid-template-columns: 1fr;
+					gap: 0.85rem;
 				}
-				ul li {
-					width: 100%;
-					text-align: center;
+
+				.post-card {
+					padding: 1rem;
 				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
+
+				.post-card__meta {
+					align-items: flex-start;
+					flex-direction: column;
+					gap: 0.35rem;
 				}
 			}
 		</style>
@@ -90,18 +111,21 @@ const posts = (await getCollection('blog')).sort(
 		<Header />
 		<main>
 			<section>
-				<ul>
+				<ul class="post-list">
 					{
 						posts.map((post) => (
 							<li>
-								<a href={`/blog/${post.id}/`}>
+								<a class="post-card" href={`/blog/${post.id}/`}>
 									{post.data.heroImage && (
 										<Image width={720} height={360} src={post.data.heroImage} alt="" />
 									)}
+									<div class="post-card__meta">
+										<span>
+											<FormattedDate date={post.data.pubDate} />
+										</span>
+									</div>
 									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
+									<p class="description">{post.data.description}</p>
 								</a>
 							</li>
 						))

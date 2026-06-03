@@ -8,12 +8,10 @@ import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || a.id.localeCompare(b.id, 'en', { numeric: true }),
 );
 const latestPosts = posts.slice(0, 3);
 const [featuredPost, ...secondaryPosts] = latestPosts;
-
-const topics = ['Web Development', 'Engineering Notes', 'Tools & Workflow', 'Learning Logs'];
 ---
 
 <!doctype html>
@@ -260,9 +258,6 @@ const topics = ['Web Development', 'Engineering Notes', 'Tools & Workflow', 'Lea
 			}
 
 			.info-grid {
-				display: grid;
-				grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-				gap: 1.5rem;
 			}
 
 			.panel {
@@ -280,25 +275,6 @@ const topics = ['Web Development', 'Engineering Notes', 'Tools & Workflow', 'Lea
 
 			.panel p {
 				color: var(--muted);
-			}
-
-			.topic-list {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.75rem;
-				margin: 1.35rem 0 0;
-				padding: 0;
-				list-style: none;
-			}
-
-			.topic-list li {
-				padding: 0.55rem 0.85rem;
-				border: 1px solid rgba(var(--accent), 0.2);
-				border-radius: 999px;
-				background: rgba(var(--accent), 0.07);
-				color: var(--heading);
-				font-size: 0.95rem;
-				font-weight: 700;
 			}
 
 			.empty-state {
@@ -319,8 +295,7 @@ const topics = ['Web Development', 'Engineering Notes', 'Tools & Workflow', 'Lea
 					flex-direction: column;
 				}
 
-				.post-grid,
-				.info-grid {
+				.post-grid {
 					grid-template-columns: 1fr;
 				}
 			}
@@ -421,7 +396,7 @@ const topics = ['Web Development', 'Engineering Notes', 'Tools & Workflow', 'Lea
 				}
 			</section>
 
-			<section class="info-grid" aria-label="About and topics">
+			<section class="info-grid" aria-label="About">
 				<div class="panel">
 					<h2>About Landfallbox</h2>
 					<p>
@@ -429,14 +404,6 @@ const topics = ['Web Development', 'Engineering Notes', 'Tools & Workflow', 'Lea
 						experimenting with software. The goal is to keep useful ideas easy to revisit and share.
 					</p>
 					<a class="section-link" href="/about/">Read more about me →</a>
-				</div>
-
-				<div class="panel">
-					<h3>What I write about</h3>
-					<p>Practical notes around web development, engineering decisions, tooling, and learning logs.</p>
-					<ul class="topic-list" aria-label="Blog topics">
-						{topics.map((topic) => <li>{topic}</li>)}
-					</ul>
 				</div>
 			</section>
 		</main>
