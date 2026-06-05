@@ -58,6 +58,45 @@ const { title, description, image = FallbackImage } = Astro.props;
 	document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0f131d' : '#ffffff');
 </script>
 
+<script is:inline>
+	const shouldOpenInNewTab = (link) => {
+		const rawHref = link.getAttribute('href');
+
+		return Boolean(
+			rawHref &&
+				!rawHref.startsWith('#') &&
+				!rawHref.startsWith('mailto:') &&
+				!rawHref.startsWith('tel:') &&
+				!link.hasAttribute('download') &&
+				!link.closest('header nav'),
+		);
+	};
+
+	const prepareNewTabLink = (link) => {
+		if (!shouldOpenInNewTab(link)) {
+			return;
+		}
+
+		const rel = new Set(link.rel.split(/\s+/).filter(Boolean));
+		rel.add('noopener');
+		rel.add('noreferrer');
+		link.target = '_blank';
+		link.rel = Array.from(rel).join(' ');
+	};
+
+	document.addEventListener('click', (event) => {
+		const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+
+		if (link) {
+			prepareNewTabLink(link);
+		}
+	});
+
+	window.addEventListener('DOMContentLoaded', () => {
+		document.querySelectorAll('a[href]').forEach(prepareNewTabLink);
+	});
+</script>
+
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
