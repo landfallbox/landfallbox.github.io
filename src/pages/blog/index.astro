@@ -10,6 +10,9 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || a.id.localeCompare(b.id, 'en', { numeric: true }),
 );
+const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort((tagA, tagB) =>
+	tagA.localeCompare(tagB, 'zh-CN'),
+);
 ---
 
 <!doctype html>
@@ -18,7 +21,14 @@ const posts = (await getCollection('blog')).sort(
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
 			main {
-				width: 960px;
+				width: 1120px;
+			}
+
+			.blog-layout {
+				display: grid;
+				grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+				gap: 1.5rem;
+				align-items: start;
 			}
 
 			.post-list {
@@ -30,8 +40,172 @@ const posts = (await getCollection('blog')).sort(
 				padding: 0;
 			}
 
+			.tag-filter {
+				display: grid;
+				gap: 0.85rem;
+				padding: 1rem;
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				background: var(--surface);
+				box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+			}
+
+			.tag-filter__controls {
+				display: grid;
+				gap: 0.75rem;
+			}
+
+			.tag-filter__summary {
+				color: var(--muted);
+				font-size: 0.95rem;
+				line-height: 1.4;
+			}
+
+			.tag-filter__list {
+				display: grid;
+				gap: 0.55rem;
+				padding: 0;
+				margin: 0;
+				list-style: none;
+			}
+
+			.tag-filter__option {
+				display: flex;
+			}
+
+			.tag-filter__option input {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				overflow: hidden;
+				clip: rect(0 0 0 0);
+				clip-path: inset(50%);
+				white-space: nowrap;
+			}
+
+			.tag-filter__chip {
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
+				gap: 0.5rem;
+				width: 100%;
+				min-height: 2rem;
+				padding: 0.2rem 0.65rem;
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				background: var(--surface);
+				color: var(--accent);
+				font-size: 0.9rem;
+				font-weight: 700;
+				line-height: 1.2;
+				text-decoration: none;
+				cursor: pointer;
+				transition:
+					border-color 0.2s ease,
+					background 0.2s ease,
+					color 0.2s ease;
+			}
+
+			.tag-filter__check {
+				display: grid;
+				width: 1.05rem;
+				height: 1.05rem;
+				place-items: center;
+				flex: 0 0 auto;
+				border: 1px solid currentColor;
+				border-radius: 4px;
+				color: var(--accent);
+				font-size: 0.78rem;
+				font-weight: 900;
+				line-height: 1;
+				opacity: 0.42;
+				transition:
+					background 0.2s ease,
+					border-color 0.2s ease,
+					opacity 0.2s ease;
+			}
+
+			.tag-filter__chip:hover {
+				border-color: var(--accent);
+			}
+
+			.tag-filter__option input:checked + .tag-filter__chip {
+				border-color: var(--accent);
+				background: var(--accent);
+				box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+				color: var(--background);
+			}
+
+			.tag-filter__chip.is-selected {
+				border-color: var(--accent);
+				background: var(--accent);
+				box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+				color: var(--background);
+			}
+
+			.tag-filter__option input:checked + .tag-filter__chip .tag-filter__check {
+				border-color: transparent;
+				background: var(--surface);
+				opacity: 1;
+			}
+
+			.tag-filter__chip.is-selected .tag-filter__check {
+				border-color: transparent;
+				background: var(--surface);
+				opacity: 1;
+			}
+
+			.tag-filter__option input:focus-visible + .tag-filter__chip {
+				outline: 3px solid rgba(var(--accent), 0.32);
+				outline-offset: 2px;
+			}
+
+			.tag-filter__clear {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 2rem;
+				padding: 0.2rem 0.65rem;
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				background: var(--surface);
+				color: var(--muted);
+				font: inherit;
+				font-size: 0.9rem;
+				font-weight: 700;
+				line-height: 1.2;
+				cursor: pointer;
+			}
+
+			.tag-filter__clear:hover:not(:disabled) {
+				border-color: rgba(var(--accent), 0.38);
+				color: rgb(var(--accent));
+			}
+
+			.tag-filter__clear:disabled {
+				cursor: not-allowed;
+				opacity: 0.55;
+			}
+
 			.post-list li {
 				display: flex;
+			}
+
+			.post-list li[hidden] {
+				display: none;
+			}
+
+			.empty-state {
+				display: none;
+				padding: 2rem;
+				border: 1px dashed var(--border);
+				border-radius: 8px;
+				background: var(--surface);
+				color: var(--muted);
+			}
+
+			.empty-state.is-visible {
+				display: block;
 			}
 
 			.post-card {
@@ -90,6 +264,19 @@ const posts = (await getCollection('blog')).sort(
 			}
 
 			@media (max-width: 720px) {
+				main {
+					width: 960px;
+				}
+
+				.blog-layout {
+					grid-template-columns: 1fr;
+					gap: 1rem;
+				}
+
+				.tag-filter__list {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+				}
+
 				.post-list {
 					grid-template-columns: 1fr;
 					gap: 0.85rem;
@@ -105,34 +292,169 @@ const posts = (await getCollection('blog')).sort(
 					gap: 0.35rem;
 				}
 			}
+
+			@media (max-width: 440px) {
+				.tag-filter__list {
+					grid-template-columns: 1fr;
+				}
+			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<section>
-				<ul class="post-list">
+			<div class="blog-layout">
+				<aside class="tag-filter" data-tag-filter aria-label="按标签筛选文章">
 					{
-						posts.map((post) => (
-							<li>
-								<a class="post-card" href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<div class="post-card__meta">
-										<span>
-											<FormattedDate date={post.data.pubDate} />
-										</span>
+						tags.length > 0 && (
+							<>
+								<div class="tag-filter__controls">
+									<div class="tag-filter__summary" data-filter-summary>
+										已选择 0 个标签，显示 {posts.length} / {posts.length} 篇文章
 									</div>
-									<h4 class="title">{post.data.title}</h4>
-									<p class="description">{post.data.description}</p>
-								</a>
-							</li>
-						))
+									<button class="tag-filter__clear" type="button" data-clear-filter disabled>
+										清除筛选
+									</button>
+								</div>
+								<ul class="tag-filter__list" aria-label="标签列表">
+									{tags.map((tag) => (
+										<li>
+											<label class="tag-filter__option">
+												<input type="checkbox" value={tag} data-tag-checkbox />
+												<span class="tag-filter__chip">
+													<span class="tag-filter__check" aria-hidden="true"></span>
+													<span>{tag}</span>
+												</span>
+											</label>
+										</li>
+									))}
+								</ul>
+							</>
+						)
 					}
-				</ul>
-			</section>
+				</aside>
+				<section>
+					<ul class="post-list" data-post-list>
+						{
+							posts.map((post) => (
+								<li data-post-tags={JSON.stringify(post.data.tags)}>
+									<a class="post-card" href={`/blog/${post.id}/`}>
+										{post.data.heroImage && (
+											<Image width={720} height={360} src={post.data.heroImage} alt="" />
+										)}
+										<div class="post-card__meta">
+											<span>
+												<FormattedDate date={post.data.pubDate} />
+											</span>
+										</div>
+										<h4 class="title">{post.data.title}</h4>
+										<p class="description">{post.data.description}</p>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+					<p class="empty-state" data-empty-state>没有找到符合当前标签组合的文章。</p>
+				</section>
+			</div>
 		</main>
 		<Footer />
+		<script>
+			const checkboxes = Array.from(document.querySelectorAll<HTMLInputElement>('[data-tag-checkbox]'));
+			const postItems = Array.from(document.querySelectorAll<HTMLElement>('[data-post-tags]'));
+			const clearButton = document.querySelector<HTMLButtonElement>('[data-clear-filter]');
+			const summary = document.querySelector<HTMLElement>('[data-filter-summary]');
+			const emptyState = document.querySelector<HTMLElement>('[data-empty-state]');
+			const totalPosts = postItems.length;
+
+			const getSelectedTags = () => checkboxes.filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+			const updateSelectedStyles = () => {
+				checkboxes.forEach((checkbox) => {
+					const chip = checkbox.nextElementSibling;
+					const check = chip?.querySelector('.tag-filter__check');
+
+					if (chip instanceof HTMLElement) {
+						chip.classList.toggle('is-selected', checkbox.checked);
+						chip.style.borderColor = checkbox.checked ? 'var(--accent)' : '';
+						chip.style.backgroundColor = checkbox.checked ? 'var(--accent)' : '';
+						chip.style.boxShadow = checkbox.checked ? '0 10px 24px rgba(15, 23, 42, 0.16)' : '';
+						chip.style.color = checkbox.checked ? 'var(--background)' : '';
+					}
+
+					if (check instanceof HTMLElement) {
+						check.textContent = checkbox.checked ? '✓' : '';
+						check.style.borderColor = checkbox.checked ? 'transparent' : '';
+						check.style.backgroundColor = checkbox.checked ? 'var(--surface)' : '';
+						check.style.opacity = checkbox.checked ? '1' : '';
+					}
+				});
+			};
+
+			const setUrlTags = (selectedTags: string[]) => {
+				const url = new URL(window.location.href);
+
+				if (selectedTags.length > 0) {
+					url.searchParams.set('tags', selectedTags.join(','));
+				} else {
+					url.searchParams.delete('tags');
+				}
+
+				window.history.replaceState({}, '', url);
+			};
+
+			const updateFilter = ({ syncUrl = true }: { syncUrl?: boolean } = {}) => {
+				const selectedTags = getSelectedTags();
+				let visibleCount = 0;
+				updateSelectedStyles();
+
+				postItems.forEach((item) => {
+					const postTags = JSON.parse(item.dataset.postTags ?? '[]');
+					const isVisible = selectedTags.every((tag) => postTags.includes(tag));
+					item.hidden = !isVisible;
+
+					if (isVisible) {
+						visibleCount += 1;
+					}
+				});
+
+				if (summary) {
+					summary.textContent = `已选择 ${selectedTags.length} 个标签，显示 ${visibleCount} / ${totalPosts} 篇文章`;
+				}
+
+				if (clearButton) {
+					clearButton.disabled = selectedTags.length === 0;
+				}
+
+				emptyState?.classList.toggle('is-visible', visibleCount === 0);
+
+				if (syncUrl) {
+					setUrlTags(selectedTags);
+				}
+			};
+
+			const hydrateFromUrl = () => {
+				const params = new URLSearchParams(window.location.search);
+				const selectedTags = (params.get('tags') ?? '')
+					.split(',')
+					.map((tag) => tag.trim())
+					.filter(Boolean);
+
+				checkboxes.forEach((checkbox) => {
+					checkbox.checked = selectedTags.includes(checkbox.value);
+				});
+
+				updateFilter({ syncUrl: false });
+			};
+
+			checkboxes.forEach((checkbox) => checkbox.addEventListener('change', () => updateFilter()));
+			clearButton?.addEventListener('click', () => {
+				checkboxes.forEach((checkbox) => {
+					checkbox.checked = false;
+				});
+				updateFilter();
+			});
+
+			hydrateFromUrl();
+		</script>
 	</body>
 </html>

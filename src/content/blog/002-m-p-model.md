@@ -2,6 +2,8 @@
 title: 'M-P 模型'
 description: '回顾 M-P 神经元、感知机和线性可分性问题，解释连接主义早期低谷的根源。'
 pubDate: '2026-06-03'
+tags:
+  - 深度学习
 ---
 
 1943 年，麦卡洛克（Warren McCulloch）和皮茨（Walter Pitts）在一篇名为《A Logical Calculus of the Ideas Immanent in Nervous Activity》的论文中，提出了第一个形式化的神经元模型，这就是我们今天所说的 M-P 模型。

@@ -2,6 +2,8 @@
 title: '更深的网络'
 description: '从 Sigmoid、Tanh、ReLU 到 ResNet，回顾深层网络突破梯度消失和退化问题的路径。'
 pubDate: '2026-06-03'
+tags:
+  - 深度学习
 ---
 
 ## Sigmoid 的问题
