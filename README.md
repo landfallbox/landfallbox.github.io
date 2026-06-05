@@ -1,5 +1,7 @@
 # Astro Starter Kit: Blog
 
+https://landfallbox.github.io/
+
 ```sh
 npm create astro@latest -- --template blog
 ```
