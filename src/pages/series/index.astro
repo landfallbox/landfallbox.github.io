@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+
+const seriesEntries = await getCollection('series');
+const seriesList = seriesEntries.map((series) => ({
+	...series,
+	postCount: series.data.posts.length,
+}));
+seriesList.sort((a, b) => a.data.title.localeCompare(b.data.title, 'zh-CN'));
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`合集 - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				width: 960px;
+			}
+
+			.page-header {
+				display: grid;
+				gap: 0.65rem;
+				margin-bottom: 2rem;
+			}
+
+			.page-header h1 {
+				margin: 0;
+				font-size: clamp(2rem, 5vw, 3.1rem);
+			}
+
+			.series-list {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 1rem;
+				padding: 0;
+				margin: 0;
+				list-style: none;
+			}
+
+			.series-card {
+				box-sizing: border-box;
+				display: flex;
+				min-height: 100%;
+				flex-direction: column;
+				gap: 0.8rem;
+				padding: 1.2rem;
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				background: var(--surface);
+				box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+				text-decoration: none;
+				transition:
+					border-color 0.2s ease,
+					box-shadow 0.2s ease,
+					transform 0.2s ease;
+			}
+
+			.series-card:hover {
+				border-color: rgba(var(--accent), 0.38);
+				box-shadow: var(--box-shadow);
+				transform: translateY(-2px);
+				text-decoration: none;
+			}
+
+			.series-card__meta {
+				color: var(--muted);
+				font-size: 0.9rem;
+				line-height: 1.2;
+			}
+
+			.series-card h2 {
+				margin: 0;
+				color: var(--heading);
+				font-size: 1.4rem;
+				line-height: 1.15;
+			}
+
+			.series-card p {
+				flex: 1;
+				margin: 0;
+				color: var(--muted);
+				font-size: 1rem;
+				line-height: 1.65;
+			}
+
+			.empty-state {
+				padding: 2rem;
+				border: 1px dashed var(--border);
+				border-radius: 8px;
+				background: var(--surface);
+				color: var(--muted);
+			}
+
+			@media (max-width: 720px) {
+				.series-list {
+					grid-template-columns: 1fr;
+					gap: 0.85rem;
+				}
+
+				.series-card {
+					padding: 1rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<header class="page-header">
+				<h1>合集</h1>
+			</header>
+
+			{
+				seriesList.length > 0 ? (
+					<ul class="series-list">
+						{seriesList.map((series) => (
+							<li>
+								<a class="series-card" href={`/series/${series.id}/`}>
+									<span class="series-card__meta">{series.postCount} 篇文章</span>
+									<h2>{series.data.title}</h2>
+									<p>{series.data.description}</p>
+								</a>
+							</li>
+						))}
+					</ul>
+				) : (
+					<p class="empty-state">还没有合集。请在 src/content/series 下添加 Markdown 或 MDX 文件。</p>
+				)
+			}
+		</main>
+		<Footer />
+	</body>
+</html>

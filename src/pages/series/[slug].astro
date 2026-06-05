@@ -1,0 +1,176 @@
+---
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+export async function getStaticPaths() {
+	const allSeries = await getCollection('series');
+
+	return allSeries.map((series) => ({
+		params: { slug: series.id },
+		props: series,
+	}));
+}
+
+type Props = CollectionEntry<'series'>;
+
+const series = Astro.props;
+const posts = (
+	await Promise.all(series.data.posts.map((postReference) => getEntry(postReference)))
+).filter((post): post is CollectionEntry<'blog'> => Boolean(post));
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`${series.data.title} - ${SITE_TITLE}`} description={series.data.description} />
+		<style>
+			main {
+				width: 820px;
+			}
+
+			.series-header {
+				display: grid;
+				gap: 0.8rem;
+				margin-bottom: 2rem;
+			}
+
+			.breadcrumb {
+				font-size: 0.95rem;
+				font-weight: 700;
+				text-decoration: none;
+			}
+
+			.series-header h1 {
+				margin: 0;
+				font-size: clamp(2rem, 5vw, 3.1rem);
+			}
+
+			.series-header p {
+				max-width: 42rem;
+				margin: 0;
+				color: var(--muted);
+			}
+
+			.series-meta {
+				color: var(--muted);
+				font-size: 0.95rem;
+			}
+
+			.post-list {
+				display: grid;
+				gap: 0.9rem;
+				padding: 0;
+				margin: 0;
+				list-style: none;
+				counter-reset: series-posts;
+			}
+
+			.post-item {
+				counter-increment: series-posts;
+			}
+
+			.post-card {
+				display: grid;
+				grid-template-columns: 3rem minmax(0, 1fr);
+				gap: 1rem;
+				padding: 1.1rem;
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				background: var(--surface);
+				box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+				text-decoration: none;
+				transition:
+					border-color 0.2s ease,
+					box-shadow 0.2s ease,
+					transform 0.2s ease;
+			}
+
+			.post-card:hover {
+				border-color: rgba(var(--accent), 0.38);
+				box-shadow: var(--box-shadow);
+				transform: translateY(-2px);
+				text-decoration: none;
+			}
+
+			.post-card::before {
+				display: grid;
+				width: 3rem;
+				height: 3rem;
+				place-items: center;
+				border: 1px solid rgba(var(--accent), 0.28);
+				border-radius: 8px;
+				background: var(--background-soft);
+				color: rgb(var(--accent));
+				content: counter(series-posts, decimal-leading-zero);
+				font-size: 0.9rem;
+				font-weight: 700;
+			}
+
+			.post-card__body {
+				display: grid;
+				gap: 0.45rem;
+			}
+
+			.post-card__meta {
+				color: var(--muted);
+				font-size: 0.9rem;
+			}
+
+			.post-card h2 {
+				margin: 0;
+				color: var(--heading);
+				font-size: 1.35rem;
+				line-height: 1.2;
+			}
+
+			.post-card p {
+				margin: 0;
+				color: var(--muted);
+				font-size: 1rem;
+				line-height: 1.6;
+			}
+
+			@media (max-width: 560px) {
+				.post-card {
+					grid-template-columns: 1fr;
+					gap: 0.8rem;
+					padding: 1rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<header class="series-header">
+				<a class="breadcrumb" href="/series/">← 全部合集</a>
+				<div class="series-meta">{posts.length} 篇文章</div>
+				<h1>{series.data.title}</h1>
+				<p>{series.data.description}</p>
+			</header>
+
+			<ol class="post-list">
+				{
+					posts.map((post) => (
+						<li class="post-item">
+							<a class="post-card" href={`/blog/${post.id}/`}>
+								<div class="post-card__body">
+									<span class="post-card__meta">
+										<FormattedDate date={post.data.pubDate} />
+									</span>
+									<h2>{post.data.title}</h2>
+									<p>{post.data.description}</p>
+								</div>
+							</a>
+						</li>
+					))
+				}
+			</ol>
+		</main>
+		<Footer />
+	</body>
+</html>
