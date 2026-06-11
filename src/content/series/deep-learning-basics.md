@@ -7,4 +7,5 @@ posts:
   - 003-mlp-and-bp
   - 004-deeper-networks
   - 005-n-gram-to-nplm
+  - 006-word2vec-and-seq2seq
 ---
