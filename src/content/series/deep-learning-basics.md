@@ -8,4 +8,5 @@ posts:
   - 004-deeper-networks
   - 005-n-gram-to-nplm
   - 006-word2vec-and-seq2seq
+  - 007-transformer
 ---
