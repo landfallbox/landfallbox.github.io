@@ -143,6 +143,20 @@ input {
 }
 table {
 	width: 100%;
+	border-collapse: collapse;
+	margin: 1.5em 0 2em;
+}
+th,
+td {
+	border: 1px solid var(--border);
+	padding: 0.45em 0.75em;
+	vertical-align: top;
+}
+th {
+	background-color: var(--background-soft);
+	color: var(--heading);
+	font-weight: 700;
+	text-align: left;
 }
 img {
 	max-width: 100%;
