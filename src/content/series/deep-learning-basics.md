@@ -11,4 +11,5 @@ posts:
   - 007-transformer
   - 008-gpt-1
   - 009-gpt-3
+  - 010-rlhf
 ---
