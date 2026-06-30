@@ -9,4 +9,6 @@ posts:
   - 005-n-gram-to-nplm
   - 006-word2vec-and-seq2seq
   - 007-transformer
+  - 008-gpt-1
+  - 009-gpt-3
 ---

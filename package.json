@@ -9,6 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "sync:dl": "node ./scripts/sync-deep-learning-series.mjs",
+    "sync:dl:check": "node ./scripts/sync-deep-learning-series.mjs --check",
     "astro": "astro"
   },
   "dependencies": {
