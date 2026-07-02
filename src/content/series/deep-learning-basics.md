@@ -13,4 +13,5 @@ posts:
   - 009-gpt-3
   - 010-rlhf
   - 011-clip
+  - 012-post
 ---
