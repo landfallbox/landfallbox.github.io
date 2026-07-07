@@ -20,6 +20,14 @@ const defaultSeries = {
 	description: '回顾深度学习的部分发展历程',
 };
 const defaultTags = ['深度学习'];
+const preservedSlugTerms = new Map([
+	['GPT-4V', 'gpt-4v'],
+	['OpenAI', 'openai'],
+	['Word2Vec', 'word2vec'],
+	['Seq2Seq', 'seq2seq'],
+	['MoE', 'moe'],
+	['ViT', 'vit'],
+]);
 
 const args = new Set(process.argv.slice(2));
 const checkOnly = args.has('--check');
@@ -463,13 +471,28 @@ function createSlug(number, title, fallbackTitle) {
 }
 
 function slugify(value) {
-	return value
+	return preserveSlugTerms(value)
 		.normalize('NFKD')
 		.replace(/([a-z0-9])([A-Z])/g, '$1-$2')
 		.replace(/[^\x00-\x7F]/g, ' ')
 		.toLowerCase()
 		.replace(/[^a-z0-9]+/g, '-')
 		.replace(/^-+|-+$/g, '');
+}
+
+function preserveSlugTerms(value) {
+	let normalized = value;
+
+	for (const [term, replacement] of preservedSlugTerms) {
+		const pattern = new RegExp(`(^|[^A-Za-z0-9])${escapeRegExp(term)}(?=$|[^A-Za-z0-9])`, 'g');
+		normalized = normalized.replace(pattern, `$1${replacement}`);
+	}
+
+	return normalized;
+}
+
+function escapeRegExp(value) {
+	return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function transformMarkdown(markdown, title) {
