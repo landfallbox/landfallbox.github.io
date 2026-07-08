@@ -73,6 +73,9 @@
 :root[data-theme='dark'] {
 	color-scheme: dark;
 }
+html {
+	scroll-behavior: smooth;
+}
 body {
 	font-family: var(--font-atkinson);
 	margin: 0;
@@ -100,6 +103,7 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
+	scroll-margin-top: 2rem;
 	color: var(--heading);
 	line-height: 1.2;
 }
@@ -191,6 +195,11 @@ hr {
 	}
 	main {
 		padding: 1em;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
 	}
 }
 
