@@ -17,6 +17,7 @@ type Props = Omit<BlogPostData, 'pubDate' | 'updatedDate' | 'heroImage'> &
 		headings?: Heading[];
 		showDate?: boolean;
 		showHeroImage?: boolean;
+		showTableOfContents?: boolean;
 	};
 
 const {
@@ -28,9 +29,11 @@ const {
 	headings = [],
 	showDate = true,
 	showHeroImage = true,
+	showTableOfContents = headings.length > 0,
 } = Astro.props;
 const tocHeadings = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
-const hasTableOfContents = tocHeadings.length > 1;
+const hasTableOfContents = showTableOfContents;
+const tocLabel = `${title}目录`;
 ---
 
 <html lang="zh-CN">
@@ -132,6 +135,15 @@ const hasTableOfContents = tocHeadings.length > 1;
 				border-left: 0;
 				margin: 0;
 				padding: 0;
+			}
+			.toc-title {
+				margin: 0 0 0.75em;
+				padding: 0 0 0.65em;
+				border-bottom: 1px solid var(--border);
+				color: var(--heading);
+				font-size: 0.95em;
+				font-weight: 700;
+				line-height: 1.2;
 			}
 			.toc li + li {
 				margin-top: 0.45em;
@@ -236,7 +248,7 @@ const hasTableOfContents = tocHeadings.length > 1;
 					</div>
 				</div>
 				<div class="article-shell">
-					{hasTableOfContents && <aside class="toc" aria-label="目录" data-toc>
+					{hasTableOfContents && <aside class="toc" aria-label={tocLabel} data-toc>
 						<button class="toc-toggle" type="button" aria-label="目录" title="目录" aria-expanded="false" aria-controls="toc-panel" data-toc-toggle>
 							<svg class="toc-icon" viewBox="0 0 24 24" aria-hidden="true">
 								<path d="M8 6h12" />
@@ -247,7 +259,8 @@ const hasTableOfContents = tocHeadings.length > 1;
 								<path d="M4 18h.01" />
 							</svg>
 						</button>
-						<nav class="toc-panel" id="toc-panel" aria-label="目录">
+						<nav class="toc-panel" id="toc-panel" aria-label={tocLabel}>
+							<div class="toc-title">{title}</div>
 							<ol>
 								{tocHeadings.map((heading) => (
 									<li class={`toc-depth-${heading.depth}`}>

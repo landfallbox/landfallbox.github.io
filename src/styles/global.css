@@ -138,6 +138,31 @@ p {
 .prose p {
 	margin-bottom: 2em;
 }
+.prose p:has(+ :where(pre, ul, ol)) {
+	margin-bottom: 0.75em;
+}
+.prose :where(ul, ol) {
+	margin: 1.2em 0 2em;
+	padding-left: 1.4em;
+}
+.prose p + :where(ul, ol) {
+	margin-top: 0;
+}
+.prose li + li {
+	margin-top: 0.5em;
+}
+.prose li > p {
+	margin: 0.65em 0;
+}
+.prose li > :first-child {
+	margin-top: 0;
+}
+.prose li > :last-child {
+	margin-bottom: 0;
+}
+.prose li > :where(ul, ol) {
+	margin: 0.65em 0 0.9em;
+}
 textarea {
 	width: 100%;
 	font-size: 16px;
@@ -175,6 +200,12 @@ code {
 pre {
 	padding: 1.5em;
 	border-radius: 8px;
+}
+.prose pre {
+	margin: 1.2em 0 2em;
+}
+.prose p + pre {
+	margin-top: 0;
 }
 pre > code {
 	all: unset;
