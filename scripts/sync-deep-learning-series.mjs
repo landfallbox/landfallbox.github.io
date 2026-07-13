@@ -26,6 +26,7 @@ const preservedSlugTerms = new Map([
 	['Word2Vec', 'word2vec'],
 	['Seq2Seq', 'seq2seq'],
 	['MoE', 'moe'],
+	['CoT', 'cot'],
 	['ViT', 'vit'],
 ]);
 

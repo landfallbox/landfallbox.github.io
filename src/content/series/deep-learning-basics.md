@@ -15,4 +15,5 @@ posts:
   - 011-clip
   - 012-post
   - 013-moe
+  - 014-cot
 ---
