@@ -1,0 +1,18 @@
+{
+	"Blog post frontmatter": {
+		"scope": "markdown",
+		"prefix": ["bp", "blog-post"],
+		"description": "创建博客文章 frontmatter",
+		"body": [
+			"---",
+			"title: '${1:文章标题}'",
+			"description: '${2:文章简介}'",
+			"pubDate: '${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}'",
+			"tags:",
+			"  - ${3:标签}",
+			"---",
+			"",
+			"${0}"
+		]
+	}
+}
