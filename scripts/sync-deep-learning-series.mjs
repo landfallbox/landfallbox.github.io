@@ -13,6 +13,7 @@ const scriptDir = path.dirname(scriptPath);
 const repoRoot = path.resolve(scriptDir, '..');
 const sourceDir = getRequiredPathEnv('DL_NOTES_DIR');
 const blogDir = path.join(repoRoot, 'src/content/blog');
+const deepLearningDir = path.join(blogDir, 'deep-learning');
 const seriesFile = path.join(repoRoot, 'src/content/series/deep-learning-basics.md');
 const imageDir = 'images';
 const defaultSeries = {
@@ -45,7 +46,7 @@ if (!existsSync(sourceDir)) {
 
 const changed = [];
 const sourceNotes = await getSourceNotes(sourceDir);
-const existingPosts = await getExistingPosts(blogDir);
+const existingPosts = await getExistingPosts(deepLearningDir);
 const existingTags = getExistingTags(existingPosts);
 const series = parseSeries(await readTextIfExists(seriesFile));
 const syncedPosts = [];
@@ -59,7 +60,7 @@ for (const sourceNote of sourceNotes) {
 	const sourceMarkdown = await readFile(sourceNote.filePath, 'utf8');
 	const sourceTitle = getFirstHeadingTitle(sourceMarkdown) || sourceNote.fallbackTitle;
 	const slug = existingPost?.slug || createSlug(sourceNote.number, sourceTitle, sourceNote.fallbackTitle);
-	const targetFile = existingPost?.filePath || path.join(blogDir, `${slug}.md`);
+	const targetFile = existingPost?.filePath || path.join(deepLearningDir, `${slug}.md`);
 	const metadata = await buildPostMetadata(
 		existingPost?.metadata,
 		sourceMarkdown,
@@ -74,7 +75,7 @@ for (const sourceNote of sourceNotes) {
 }
 
 await writeIfChanged(seriesFile, renderSeries(series, syncedPosts), changed);
-await syncImages(path.join(sourceDir, imageDir), path.join(blogDir, imageDir), changed);
+await syncImages(path.join(sourceDir, imageDir), path.join(deepLearningDir, imageDir), changed);
 
 printResult(changed, sourceNotes.length);
 
@@ -261,7 +262,7 @@ function renderPost(post, body) {
 }
 
 function renderSeries(series, posts) {
-	const postList = posts.map((post) => `  - ${post.slug}`).join('\n');
+	const postList = posts.map((post) => `  - deep-learning/${post.slug}`).join('\n');
 
 	return `---\ntitle: ${quoteYamlString(series.title)}\ndescription: ${quoteYamlString(series.description)}\nposts:\n${postList}\n---\n`;
 }
