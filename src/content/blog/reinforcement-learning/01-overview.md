@@ -13,7 +13,7 @@ tags:
 
 强化学习的基本范式为：
 
-![alt text](images/image.png)
+![alt text](images/01-agent-environment.png)
 
 其中，Agent（智能体）是我们训练的模型。在每个时刻 t，Agent 会根据当前的状态（State） $s_t$ 选择一个动作（Action）$a_t$。环境（Environment）会根据这个动作返回下一个状态 $s_{t+1}$ 和奖励（Reward） $r_t$。如此循环往复。
 
