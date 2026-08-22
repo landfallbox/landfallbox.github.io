@@ -8,4 +8,7 @@ posts:
   - reinforcement-learning/04-monte-carlo
   - reinforcement-learning/05-td-methods
   - reinforcement-learning/06-dqn
+  - reinforcement-learning/07-policy-gradient
+  - reinforcement-learning/08-reinforce
+  - reinforcement-learning/09-actor-critic
 ---
